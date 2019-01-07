@@ -11,6 +11,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 BOTTLENECK_FEATURES = os.path.join('bottleneck_features', 'DogInceptionV3Data.npz')
+BOTTLENECK_URL = 'https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz'
 DOG_IMAGES = 'dogImages'
 DOG_BREEDS_COUNT = 133
 IMAGE_SHAPE = (224, 224)
@@ -44,6 +45,25 @@ def load_dataset(path):
     return dog_files, dog_targets
 
 
+def download_bottleneck_url():
+    import math
+    import requests
+    r = requests.get(BOTTLENECK_URL, stream=True)
+
+    total_size = int(r.headers.get('content-length', 0))
+    block_size = 1024
+    wrote = 0
+
+    with open(BOTTLENECK_FEATURES, 'wb') as f:
+        for data in tqdm(r.iter_content(block_size), total=math.ceil(total_size / block_size), unit='KB', unit_scale=True):
+            wrote += len(data)
+            f.write(data)
+
+    if total_size != 0 and wrote != total_size:
+        print('Whoops, download went wrong.')
+        exit()
+
+
 def load_bottleneck_features(model_is_trained=False):
     # load train, test and validation features for InceptionV3.
     if not model_is_trained:
@@ -52,8 +72,10 @@ def load_bottleneck_features(model_is_trained=False):
     try:
         bottleneck_features = np.load(BOTTLENECK_FEATURES)
     except FileNotFoundError:
-        print('Please, download DogInceptionV3Data.npz features.')
-        exit()
+        import urllib.request
+        print('Downloading DogInceptionV3Data.npz features...')
+        download_bottleneck_url()
+        bottleneck_features = np.load(BOTTLENECK_FEATURES)
     return bottleneck_features['train'], bottleneck_features['valid'], bottleneck_features['test']
 
 

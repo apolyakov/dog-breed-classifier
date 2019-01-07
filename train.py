@@ -33,7 +33,12 @@ def images_to_tensor(img_paths):
 
 # a function for loading train, test, and validation datasets.
 def load_dataset(path):
-    data = load_files(path)
+    data = None
+    try:
+        data = load_files(path)
+    except FileNotFoundError:
+        print('Please, download the dogImages dataset.')
+        exit()
     dog_files = np.array(data['filenames'])
     dog_targets = keras.utils.to_categorical(np.array(data['target']), DOG_BREEDS_COUNT)
     return dog_files, dog_targets
@@ -43,7 +48,12 @@ def load_bottleneck_features(model_is_trained=False):
     # load train, test and validation features for InceptionV3.
     if not model_is_trained:
         print('Loading features for InceptionV3 model...')
-    bottleneck_features = np.load(BOTTLENECK_FEATURES)
+    bottleneck_features = None
+    try:
+        bottleneck_features = np.load(BOTTLENECK_FEATURES)
+    except FileNotFoundError:
+        print('Please, download DogInceptionV3Data.npz features.')
+        exit()
     return bottleneck_features['train'], bottleneck_features['valid'], bottleneck_features['test']
 
 

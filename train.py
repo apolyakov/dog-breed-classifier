@@ -52,7 +52,7 @@ def load_bottleneck_features(model_is_trained=False):
     try:
         bottleneck_features = np.load(BOTTLENECK_FEATURES)
     except FileNotFoundError:
-        print('Please, download DogInceptionV3Data.npz features.')
+        print('Please, download the DogInceptionV3Data.npz features.')
         exit()
     return bottleneck_features['train'], bottleneck_features['valid'], bottleneck_features['test']
 

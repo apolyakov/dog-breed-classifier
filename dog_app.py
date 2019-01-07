@@ -17,7 +17,7 @@ def parse_args():
                           '--predict',
                           type=str,
                           default='',
-                          help='A path to image or directory with images.')
+                          help='A path to an image.')
     return arg_parser.parse_args()
 
 

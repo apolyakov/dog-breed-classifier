@@ -11,7 +11,7 @@ This dataset contains 133 different breeds of dogs and is already split into tra
 
 ## Instructions
 
-To run the neural network, follow these instructions:
+To run the neural network, follow these instructions (the first run will train the model and store it in saved_models/ folder):
 * download the dataset and place it under `path/to/project` folder
 * download [DogInceptionV3Data.npz](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz)
 which consists of pretrained InceptionV3 model and place it under `path/to/project/bottleneck_features/` folder. This will significantly reduce training time

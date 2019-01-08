@@ -1,5 +1,4 @@
 import os
-import glob
 
 import numpy as np
 from keras_preprocessing import image
@@ -10,11 +9,13 @@ from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
-BOTTLENECK_FEATURES = os.path.join('bottleneck_features', 'DogInceptionV3Data.npz')
-DOG_IMAGES = 'dogImages'
+THIS_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+BOTTLENECK_FEATURES = os.path.join(THIS_DIRECTORY, '..', 'bottleneck_features', 'DogInceptionV3Data.npz')
+DOG_IMAGES = os.path.join(THIS_DIRECTORY, '..', 'dogImages')
+DOG_BREEDS = os.path.join(THIS_DIRECTORY, '..', 'resources', 'dog_breeds.txt')
 DOG_BREEDS_COUNT = 133
 IMAGE_SHAPE = (224, 224)
-SAVED_MODEL = os.path.join('saved_models', 'weights.best.InceptionV3.hdf5')
+SAVED_MODEL = os.path.join(THIS_DIRECTORY, '..', 'saved_models', 'weights.best.InceptionV3.hdf5')
 
 
 def img_to_tensor(img_path):
@@ -59,7 +60,11 @@ def load_bottleneck_features(model_is_trained=False):
 
 # load list of dog names.
 def load_dog_names():
-    return [item[20:-1] for item in sorted(glob.glob("dogImages/train/*/"))]
+    breeds = []
+    with open(DOG_BREEDS, mode='r') as f:
+        for line in f.readlines():
+            breeds.append(line.replace('_', ' ').strip())
+    return sorted(breeds)
 
 
 def get_dataset():

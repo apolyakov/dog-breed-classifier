@@ -1,8 +1,5 @@
 import argparse
 
-import predict
-import train
-
 
 def parse_args():
     arg_parser = argparse.ArgumentParser(description='Program for training and/or '
@@ -23,6 +20,8 @@ def parse_args():
 
 if __name__ == '__main__':
     path = parse_args().predict
+
+    import predict, train
 
     if not path:
         train.main()

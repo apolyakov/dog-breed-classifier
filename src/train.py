@@ -1,7 +1,7 @@
 import numpy as np
 from tensorflow import keras
 
-from . import utils
+import utils
 
 
 def main():

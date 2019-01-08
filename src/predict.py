@@ -3,8 +3,7 @@ import os
 import numpy as np
 from keras.applications.inception_v3 import InceptionV3, preprocess_input
 
-from . import train
-from . import utils
+import train, utils
 
 
 def main(image_path):

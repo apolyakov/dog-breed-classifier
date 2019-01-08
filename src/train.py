@@ -11,6 +11,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 THIS_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 BOTTLENECK_FEATURES = os.path.join(THIS_DIRECTORY, '..', 'bottleneck_features', 'DogInceptionV3Data.npz')
+BOTTLENECK_URL = 'https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz'
 DOG_IMAGES = os.path.join(THIS_DIRECTORY, '..', 'dogImages')
 DOG_BREEDS = os.path.join(THIS_DIRECTORY, '..', 'resources', 'dog_breeds.txt')
 DOG_BREEDS_COUNT = 133
@@ -45,6 +46,25 @@ def load_dataset(path):
     return dog_files, dog_targets
 
 
+def download_bottleneck_url():
+    import math
+    import requests
+    r = requests.get(BOTTLENECK_URL, stream=True)
+
+    total_size = int(r.headers.get('content-length', 0))
+    block_size = 1024
+    wrote = 0
+
+    with open(BOTTLENECK_FEATURES, 'wb') as f:
+        for data in tqdm(r.iter_content(block_size), total=math.ceil(total_size / block_size), unit='KB', unit_scale=True):
+            wrote += len(data)
+            f.write(data)
+
+    if total_size != 0 and wrote != total_size:
+        print('Whoops, download went wrong.')
+        exit()
+
+
 def load_bottleneck_features(model_is_trained=False):
     # load train, test and validation features for InceptionV3.
     if not model_is_trained:
@@ -53,8 +73,9 @@ def load_bottleneck_features(model_is_trained=False):
     try:
         bottleneck_features = np.load(BOTTLENECK_FEATURES)
     except FileNotFoundError:
-        print('Please, download the DogInceptionV3Data.npz features.')
-        exit()
+        print('\nDownloading the DogInceptionV3Data.npz features...')
+        download_bottleneck_url()
+        bottleneck_features = np.load(BOTTLENECK_FEATURES)
     return bottleneck_features['train'], bottleneck_features['valid'], bottleneck_features['test']
 
 

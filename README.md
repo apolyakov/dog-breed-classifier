@@ -11,12 +11,16 @@ This dataset contains 133 different breeds of dogs and is already split into tra
 
 ## Instructions
 
-To run the neural network, follow these instructions (the first run will train the model and store it in saved_models/ folder):
-* download the dataset and place it under `path/to/project` folder
-* download [DogInceptionV3Data.npz](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz)
-which consists of pretrained InceptionV3 model and place it under `path/to/project/bottleneck_features/` folder. This will significantly reduce training time
-* obtain the necessary Python packages (see `requirements.txt`) and switch Keras backend to Tensorflow
+To run the neural network, follow these instructions:
+* Download the features which consist of pretrained InceptionV3 model and place them under `path/to/project/bottleneck_features/` folder.
+This will significantly reduce a training time. There are two ways of downloading the features:
+  * manual way: download the features from [here](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz)
+  * automatic way (UNRECOMMENDED): the program will do an automatic downloading in case of missing features
+* Obtain the necessary Python packages (see `requirements.txt`) and switch Keras backend to Tensorflow
   ```
   KERAS_BACKEND=tensorflow python -c "from keras import backend"
   ```
-* run `python dog_app.py -h` to see more information about training and predicting dog's breed using this NN
+* Run `python dog_app.py -h` to see more information about training and predicting dog's breed using this NN
+
+If you want to train the model yourself, you need to download the dataset and unpack it like `path/to/project/dogImages`.
+Then follow the above described instructions.

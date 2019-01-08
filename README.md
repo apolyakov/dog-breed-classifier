@@ -15,7 +15,7 @@ To run the neural network, follow these instructions:
 * Download the features which consist of pretrained InceptionV3 model and place them under `path/to/project/bottleneck_features/` folder.
 This will significantly reduce a training time. There are two ways of downloading the features:
   * manual way: download the features from [here](https://s3-us-west-1.amazonaws.com/udacity-aind/dog-project/DogInceptionV3Data.npz)
-  * automatic way (UNRECOMMENDED): the program will do an automatic downloading in case of missing features
+  * automatic way: the program will do an automatic download in case of missing features
 * Obtain the necessary Python packages (see `requirements.txt`) and switch Keras backend to Tensorflow
   ```
   KERAS_BACKEND=tensorflow python -c "from keras import backend"

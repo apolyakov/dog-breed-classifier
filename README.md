@@ -1,6 +1,6 @@
 ## Overview
 
-This is a project I worked on as part of my Machine Leearning course. The original project is available
+This is a project I worked on as part of my Machine Learning course. The original project is available
 [here](https://github.com/jeremyjordan/machine-learning/tree/master/projects/dog-project).  
 The average `test_accuracy` for this network is about 80%.
 

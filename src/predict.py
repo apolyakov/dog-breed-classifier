@@ -3,21 +3,22 @@ import os
 import numpy as np
 from keras.applications.inception_v3 import InceptionV3, preprocess_input
 
-import train
+from . import train
+from . import utils
 
 
 def main(image_path):
     print('Loading the image...')
-    image_tensor = train.img_to_tensor(image_path)
+    image_tensor = utils.img_to_tensor(image_path)
 
     print('Extracting InceptionV3 features for the image...')
     bottleneck_features = InceptionV3(weights='imagenet', include_top=False).predict(
         preprocess_input(image_tensor))
 
     # Preparing the model.
-    if os.path.isfile(train.SAVED_MODEL):
+    if os.path.isfile(utils.SAVED_MODEL):
         # Load the trained model if we have it.
-        model = train.load_model(train.SAVED_MODEL)
+        model = utils.load_model(utils.SAVED_MODEL)
     else:
         # Train the model otherwise.
         model = train.main()
@@ -26,7 +27,7 @@ def main(image_path):
     prediction = model.predict(bottleneck_features)[0]
 
     top_N = 4
-    dog_names = train.load_dog_names()
+    dog_names = utils.load_dog_names()
 
     # sort predicted breeds by highest probability, extract the top N predictions
     breeds_predicted = [dog_names[idx].replace('_', ' ') for idx in np.argsort(prediction)[::-1][:top_N]]
